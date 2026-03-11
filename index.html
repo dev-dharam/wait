@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wait...</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0f0f0f;
+      color: #ffffff;
+      font-family: 'Georgia', serif;
+      height: 100vh;
+      overflow: hidden;
+
+      /* Flexbox: center everything */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ─── Shared screen panel ───────────────────────────────────── */
+    .screen {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      text-align: center;
+      padding: 24px;
+    }
+
+    /* ─── Fade animations ───────────────────────────────────────── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0);    }
+      to   { opacity: 0; transform: translateY(-10px);}
+    }
+
+    /* Reveal animation for the final content (scale + fade) */
+    @keyframes popIn {
+      0%   { opacity: 0; transform: scale(0.6) rotate(-4deg); }
+      70%  { opacity: 1; transform: scale(1.08) rotate(1deg);  }
+      100% { opacity: 1; transform: scale(1) rotate(0deg);     }
+    }
+
+    /* ─── Screen 1: intro message ───────────────────────────────── */
+    #intro {
+      animation: fadeIn 1s ease forwards;
+    }
+
+    #intro p {
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      letter-spacing: 0.04em;
+      color: #cccccc;
+      font-style: italic;
+    }
+
+    /* Blinking cursor effect for drama */
+    #intro p::after {
+      content: '|';
+      animation: blink 0.8s step-end infinite;
+      margin-left: 4px;
+      color: #888;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* Fade-out class applied via JS */
+    .fade-out {
+      animation: fadeOut 0.8s ease forwards !important;
+    }
+
+    /* Hidden utility */
+    .hidden {
+      display: none !important;
+    }
+
+    /* ─── Screen 2: main prank content ─────────────────────────── */
+    #main-content {
+      animation: popIn 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    #main-content h1 {
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 900;
+      font-family: 'Impact', 'Arial Black', sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+
+      /* Bold red-to-white gradient for drama */
+      background: linear-gradient(135deg, #ff3c3c 0%, #ffffff 60%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+
+      /* Subtle glow */
+      filter: drop-shadow(0 0 18px rgba(255, 60, 60, 0.55));
+    }
+
+    /* SVG wrapper */
+    #finger-wrap {
+      filter: drop-shadow(0 0 24px rgba(255, 200, 150, 0.35));
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ╔══════════════════════════════╗ -->
+  <!-- ║  SCREEN 1 — Intro message   ║ -->
+  <!-- ╚══════════════════════════════╝ -->
+  <div id="intro" class="screen">
+    <p>Wait... I have something for you</p>
+  </div>
+
+
+  <!-- ╔════════════════════════════════════╗ -->
+  <!-- ║  SCREEN 2 — Main prank content    ║ -->
+  <!-- ╚════════════════════════════════════╝ -->
+  <div id="main-content" class="screen hidden">
+
+    <h1>Fuck You</h1>
+
+    <!-- ── Inline SVG: Middle Finger Hand ──────────────────────── -->
+    <!--
+      Built from scratch using simple vector shapes:
+      - Palm: rounded rectangle
+      - Four curled fingers: small rounded rects along the top of palm
+      - Middle finger: tall rounded rect extending upward
+      - Thumb: small angled shape on the side
+    -->
+    <div id="finger-wrap">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 160 300"
+        width="220"
+        height="300"
+        aria-label="Middle finger illustration"
+        role="img"
+      >
+        <!-- ── Skin tone palette ── -->
+        <defs>
+          <linearGradient id="skinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#f5c89a"/>
+            <stop offset="100%" stop-color="#e0a070"/>
+          </linearGradient>
+          <linearGradient id="nailGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%"   stop-color="#fce4d8"/>
+            <stop offset="100%" stop-color="#f0b8a0"/>
+          </linearGradient>
+        </defs>
+
+        <!-- ── Palm ── -->
+        <rect
+          x="20" y="155" width="120" height="110"
+          rx="18" ry="18"
+          fill="url(#skinGrad)"
+          stroke="#c88050" stroke-width="1.5"
+        />
+
+        <!-- ── Pinky finger (curled — short nub at top-right of palm) ── -->
+        <rect
+          x="108" y="138" width="24" height="36"
+          rx="10" ry="10"
+          fill="url(#skinGrad)"
+          stroke="#c88050" stroke-width="1.5"
+        />
+
+        <!-- ── Ring finger (curled — slightly taller) ── -->
+        <rect
+          x="82" y="128" width="24" height="46"
+          rx="10" ry="10"
+          fill="url(#skinGrad)"
+          stroke="#c88050" stroke-width="1.5"
+        />
+
+        <!-- ── Index finger (curled — same height as ring) ── -->
+        <rect
+          x="28" y="128" width="24" height="46"
+          rx="10" ry="10"
+          fill="url(#skinGrad)"
+          stroke="#c88050" stroke-width="1.5"
+        />
+
+        <!-- ── Middle finger — the star of the show ── -->
+        <!-- Finger shaft -->
+        <rect
+          x="53" y="30" width="34" height="145"
+          rx="15" ry="15"
+          fill="url(#skinGrad)"
+          stroke="#c88050" stroke-width="1.5"
+        />
+
+        <!-- Fingertip cap (slightly rounder top) -->
+        <ellipse
+          cx="70" cy="32"
+          rx="17" ry="16"
+          fill="url(#skinGrad)"
+          stroke="#c88050" stroke-width="1.5"
+        />
+
+        <!-- Fingernail -->
+        <rect
+          x="58" y="22" width="24" height="30"
+          rx="9" ry="9"
+          fill="url(#nailGrad)"
+          stroke="#d4967a" stroke-width="1"
+          opacity="0.9"
+        />
+
+        <!-- Knuckle crease lines on middle finger -->
+        <line x1="56" y1="108" x2="84" y2="108" stroke="#c88050" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+        <line x1="56" y1="130" x2="84" y2="130" stroke="#c88050" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+
+        <!-- ── Thumb (left side, angled outward) ── -->
+        <rect
+          x="4" y="175" width="26" height="50"
+          rx="12" ry="12"
+          fill="url(#skinGrad)"
+          stroke="#c88050" stroke-width="1.5"
+          transform="rotate(-18, 17, 200)"
+        />
+
+        <!-- ── Wrist / base of hand ── -->
+        <rect
+          x="30" y="252" width="100" height="28"
+          rx="12" ry="12"
+          fill="url(#skinGrad)"
+          stroke="#c88050" stroke-width="1.5"
+        />
+
+      </svg>
+    </div>
+    <!-- ── End SVG ── -->
+
+  </div><!-- /#main-content -->
+
+
+  <script>
+    // ─── Grab elements ───────────────────────────────────────────
+    const intro       = document.getElementById('intro');
+    const mainContent = document.getElementById('main-content');
+
+    // ─── Step 1: After 3 seconds, fade out the intro message ─────
+    setTimeout(() => {
+      intro.classList.add('fade-out');
+
+      // ─── Step 2: After the fade-out finishes (~0.8s), hide intro
+      //             and reveal the main prank content ────────────
+      setTimeout(() => {
+        intro.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+      }, 800); // matches fadeOut animation duration
+
+    }, 3000); // 3 seconds of intro display time
+  </script>
+
+</body>
+</html>
